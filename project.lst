@@ -1,0 +1,1290 @@
+                                      1 ;--------------------------------------------------------
+                                      2 ; File Created by SDCC : free open source ANSI-C Compiler
+                                      3 ; Version 4.0.0 #11528 (MINGW64)
+                                      4 ;--------------------------------------------------------
+                                      5 	.module project
+                                      6 	.optsdcc -mmcs51 --model-small
+                                      7 	
+                                      8 ;--------------------------------------------------------
+                                      9 ; Public variables in this module
+                                     10 ;--------------------------------------------------------
+                                     11 	.globl _sheet
+                                     12 	.globl _main
+                                     13 	.globl _read
+                                     14 	.globl _Timer1
+                                     15 	.globl _Timer0_ISR
+                                     16 	.globl _display
+                                     17 	.globl _CY
+                                     18 	.globl _AC
+                                     19 	.globl _F0
+                                     20 	.globl _RS1
+                                     21 	.globl _RS0
+                                     22 	.globl _OV
+                                     23 	.globl _F1
+                                     24 	.globl _P
+                                     25 	.globl _PS
+                                     26 	.globl _PT1
+                                     27 	.globl _PX1
+                                     28 	.globl _PT0
+                                     29 	.globl _PX0
+                                     30 	.globl _RD
+                                     31 	.globl _WR
+                                     32 	.globl _T1
+                                     33 	.globl _T0
+                                     34 	.globl _INT1
+                                     35 	.globl _INT0
+                                     36 	.globl _TXD
+                                     37 	.globl _RXD
+                                     38 	.globl _P3_7
+                                     39 	.globl _P3_6
+                                     40 	.globl _P3_5
+                                     41 	.globl _P3_4
+                                     42 	.globl _P3_3
+                                     43 	.globl _P3_2
+                                     44 	.globl _P3_1
+                                     45 	.globl _P3_0
+                                     46 	.globl _EA
+                                     47 	.globl _ES
+                                     48 	.globl _ET1
+                                     49 	.globl _EX1
+                                     50 	.globl _ET0
+                                     51 	.globl _EX0
+                                     52 	.globl _P2_7
+                                     53 	.globl _P2_6
+                                     54 	.globl _P2_5
+                                     55 	.globl _P2_4
+                                     56 	.globl _P2_3
+                                     57 	.globl _P2_2
+                                     58 	.globl _P2_1
+                                     59 	.globl _P2_0
+                                     60 	.globl _SM0
+                                     61 	.globl _SM1
+                                     62 	.globl _SM2
+                                     63 	.globl _REN
+                                     64 	.globl _TB8
+                                     65 	.globl _RB8
+                                     66 	.globl _TI
+                                     67 	.globl _RI
+                                     68 	.globl _P1_7
+                                     69 	.globl _P1_6
+                                     70 	.globl _P1_5
+                                     71 	.globl _P1_4
+                                     72 	.globl _P1_3
+                                     73 	.globl _P1_2
+                                     74 	.globl _P1_1
+                                     75 	.globl _P1_0
+                                     76 	.globl _TF1
+                                     77 	.globl _TR1
+                                     78 	.globl _TF0
+                                     79 	.globl _TR0
+                                     80 	.globl _IE1
+                                     81 	.globl _IT1
+                                     82 	.globl _IE0
+                                     83 	.globl _IT0
+                                     84 	.globl _P0_7
+                                     85 	.globl _P0_6
+                                     86 	.globl _P0_5
+                                     87 	.globl _P0_4
+                                     88 	.globl _P0_3
+                                     89 	.globl _P0_2
+                                     90 	.globl _P0_1
+                                     91 	.globl _P0_0
+                                     92 	.globl _B
+                                     93 	.globl _ACC
+                                     94 	.globl _PSW
+                                     95 	.globl _IP
+                                     96 	.globl _P3
+                                     97 	.globl _IE
+                                     98 	.globl _P2
+                                     99 	.globl _SBUF
+                                    100 	.globl _SCON
+                                    101 	.globl _P1
+                                    102 	.globl _TH1
+                                    103 	.globl _TH0
+                                    104 	.globl _TL1
+                                    105 	.globl _TL0
+                                    106 	.globl _TMOD
+                                    107 	.globl _TCON
+                                    108 	.globl _PCON
+                                    109 	.globl _DPH
+                                    110 	.globl _DPL
+                                    111 	.globl _SP
+                                    112 	.globl _P0
+                                    113 	.globl _size
+                                    114 	.globl _clock
+                                    115 	.globl _memory
+                                    116 	.globl _digit
+                                    117 	.globl _seg
+                                    118 	.globl _play
+                                    119 	.globl _tone
+                                    120 	.globl _delay
+                                    121 	.globl _counter_1
+                                    122 	.globl _second
+                                    123 	.globl _minute
+                                    124 	.globl _counter
+                                    125 ;--------------------------------------------------------
+                                    126 ; special function registers
+                                    127 ;--------------------------------------------------------
+                                    128 	.area RSEG    (ABS,DATA)
+      000000                        129 	.org 0x0000
+                           000080   130 _P0	=	0x0080
+                           000081   131 _SP	=	0x0081
+                           000082   132 _DPL	=	0x0082
+                           000083   133 _DPH	=	0x0083
+                           000087   134 _PCON	=	0x0087
+                           000088   135 _TCON	=	0x0088
+                           000089   136 _TMOD	=	0x0089
+                           00008A   137 _TL0	=	0x008a
+                           00008B   138 _TL1	=	0x008b
+                           00008C   139 _TH0	=	0x008c
+                           00008D   140 _TH1	=	0x008d
+                           000090   141 _P1	=	0x0090
+                           000098   142 _SCON	=	0x0098
+                           000099   143 _SBUF	=	0x0099
+                           0000A0   144 _P2	=	0x00a0
+                           0000A8   145 _IE	=	0x00a8
+                           0000B0   146 _P3	=	0x00b0
+                           0000B8   147 _IP	=	0x00b8
+                           0000D0   148 _PSW	=	0x00d0
+                           0000E0   149 _ACC	=	0x00e0
+                           0000F0   150 _B	=	0x00f0
+                                    151 ;--------------------------------------------------------
+                                    152 ; special function bits
+                                    153 ;--------------------------------------------------------
+                                    154 	.area RSEG    (ABS,DATA)
+      000000                        155 	.org 0x0000
+                           000080   156 _P0_0	=	0x0080
+                           000081   157 _P0_1	=	0x0081
+                           000082   158 _P0_2	=	0x0082
+                           000083   159 _P0_3	=	0x0083
+                           000084   160 _P0_4	=	0x0084
+                           000085   161 _P0_5	=	0x0085
+                           000086   162 _P0_6	=	0x0086
+                           000087   163 _P0_7	=	0x0087
+                           000088   164 _IT0	=	0x0088
+                           000089   165 _IE0	=	0x0089
+                           00008A   166 _IT1	=	0x008a
+                           00008B   167 _IE1	=	0x008b
+                           00008C   168 _TR0	=	0x008c
+                           00008D   169 _TF0	=	0x008d
+                           00008E   170 _TR1	=	0x008e
+                           00008F   171 _TF1	=	0x008f
+                           000090   172 _P1_0	=	0x0090
+                           000091   173 _P1_1	=	0x0091
+                           000092   174 _P1_2	=	0x0092
+                           000093   175 _P1_3	=	0x0093
+                           000094   176 _P1_4	=	0x0094
+                           000095   177 _P1_5	=	0x0095
+                           000096   178 _P1_6	=	0x0096
+                           000097   179 _P1_7	=	0x0097
+                           000098   180 _RI	=	0x0098
+                           000099   181 _TI	=	0x0099
+                           00009A   182 _RB8	=	0x009a
+                           00009B   183 _TB8	=	0x009b
+                           00009C   184 _REN	=	0x009c
+                           00009D   185 _SM2	=	0x009d
+                           00009E   186 _SM1	=	0x009e
+                           00009F   187 _SM0	=	0x009f
+                           0000A0   188 _P2_0	=	0x00a0
+                           0000A1   189 _P2_1	=	0x00a1
+                           0000A2   190 _P2_2	=	0x00a2
+                           0000A3   191 _P2_3	=	0x00a3
+                           0000A4   192 _P2_4	=	0x00a4
+                           0000A5   193 _P2_5	=	0x00a5
+                           0000A6   194 _P2_6	=	0x00a6
+                           0000A7   195 _P2_7	=	0x00a7
+                           0000A8   196 _EX0	=	0x00a8
+                           0000A9   197 _ET0	=	0x00a9
+                           0000AA   198 _EX1	=	0x00aa
+                           0000AB   199 _ET1	=	0x00ab
+                           0000AC   200 _ES	=	0x00ac
+                           0000AF   201 _EA	=	0x00af
+                           0000B0   202 _P3_0	=	0x00b0
+                           0000B1   203 _P3_1	=	0x00b1
+                           0000B2   204 _P3_2	=	0x00b2
+                           0000B3   205 _P3_3	=	0x00b3
+                           0000B4   206 _P3_4	=	0x00b4
+                           0000B5   207 _P3_5	=	0x00b5
+                           0000B6   208 _P3_6	=	0x00b6
+                           0000B7   209 _P3_7	=	0x00b7
+                           0000B0   210 _RXD	=	0x00b0
+                           0000B1   211 _TXD	=	0x00b1
+                           0000B2   212 _INT0	=	0x00b2
+                           0000B3   213 _INT1	=	0x00b3
+                           0000B4   214 _T0	=	0x00b4
+                           0000B5   215 _T1	=	0x00b5
+                           0000B6   216 _WR	=	0x00b6
+                           0000B7   217 _RD	=	0x00b7
+                           0000B8   218 _PX0	=	0x00b8
+                           0000B9   219 _PT0	=	0x00b9
+                           0000BA   220 _PX1	=	0x00ba
+                           0000BB   221 _PT1	=	0x00bb
+                           0000BC   222 _PS	=	0x00bc
+                           0000D0   223 _P	=	0x00d0
+                           0000D1   224 _F1	=	0x00d1
+                           0000D2   225 _OV	=	0x00d2
+                           0000D3   226 _RS0	=	0x00d3
+                           0000D4   227 _RS1	=	0x00d4
+                           0000D5   228 _F0	=	0x00d5
+                           0000D6   229 _AC	=	0x00d6
+                           0000D7   230 _CY	=	0x00d7
+                                    231 ;--------------------------------------------------------
+                                    232 ; overlayable register banks
+                                    233 ;--------------------------------------------------------
+                                    234 	.area REG_BANK_0	(REL,OVR,DATA)
+      000000                        235 	.ds 8
+                                    236 	.area REG_BANK_1	(REL,OVR,DATA)
+      000000                        237 	.ds 8
+                                    238 ;--------------------------------------------------------
+                                    239 ; internal ram data
+                                    240 ;--------------------------------------------------------
+                                    241 	.area DSEG    (DATA)
+      000000                        242 _counter::
+      000000                        243 	.ds 1
+      000001                        244 _minute::
+      000001                        245 	.ds 1
+      000002                        246 _second::
+      000002                        247 	.ds 1
+      000003                        248 _counter_1::
+      000003                        249 	.ds 1
+      000004                        250 _delay::
+      000004                        251 	.ds 1
+      000005                        252 _tone::
+      000005                        253 	.ds 1
+      000006                        254 _play::
+      000006                        255 	.ds 1
+      000007                        256 _seg::
+      000007                        257 	.ds 10
+      000011                        258 _digit::
+      000011                        259 	.ds 4
+      000015                        260 _memory::
+      000015                        261 	.ds 2
+      000017                        262 _clock::
+      000017                        263 	.ds 8
+      00001F                        264 _size::
+      00001F                        265 	.ds 1
+      000020                        266 _main_choose_65537_20:
+      000020                        267 	.ds 1
+      000021                        268 _main_n1_65537_20:
+      000021                        269 	.ds 1
+      000022                        270 _main_flag_65537_20:
+      000022                        271 	.ds 1
+      000023                        272 _main_reset_digit_65537_20:
+      000023                        273 	.ds 4
+      000027                        274 _main_index_131074_23:
+      000027                        275 	.ds 1
+                                    276 ;--------------------------------------------------------
+                                    277 ; overlayable items in internal ram 
+                                    278 ;--------------------------------------------------------
+                                    279 	.area	OSEG    (OVR,DATA)
+                                    280 	.area	OSEG    (OVR,DATA)
+      000000                        281 _read_row_131072_13:
+      000000                        282 	.ds 2
+      000002                        283 _read_k_262144_15:
+      000002                        284 	.ds 2
+                                    285 ;--------------------------------------------------------
+                                    286 ; Stack segment in internal ram 
+                                    287 ;--------------------------------------------------------
+                                    288 	.area	SSEG
+      000000                        289 __start__stack:
+      000000                        290 	.ds	1
+                                    291 
+                                    292 ;--------------------------------------------------------
+                                    293 ; indirectly addressable internal ram data
+                                    294 ;--------------------------------------------------------
+                                    295 	.area ISEG    (DATA)
+                                    296 ;--------------------------------------------------------
+                                    297 ; absolute internal ram data
+                                    298 ;--------------------------------------------------------
+                                    299 	.area IABS    (ABS,DATA)
+                                    300 	.area IABS    (ABS,DATA)
+                                    301 ;--------------------------------------------------------
+                                    302 ; bit data
+                                    303 ;--------------------------------------------------------
+                                    304 	.area BSEG    (BIT)
+                                    305 ;--------------------------------------------------------
+                                    306 ; paged external ram data
+                                    307 ;--------------------------------------------------------
+                                    308 	.area PSEG    (PAG,XDATA)
+                                    309 ;--------------------------------------------------------
+                                    310 ; external ram data
+                                    311 ;--------------------------------------------------------
+                                    312 	.area XSEG    (XDATA)
+                                    313 ;--------------------------------------------------------
+                                    314 ; absolute external ram data
+                                    315 ;--------------------------------------------------------
+                                    316 	.area XABS    (ABS,XDATA)
+                                    317 ;--------------------------------------------------------
+                                    318 ; external initialized ram data
+                                    319 ;--------------------------------------------------------
+                                    320 	.area XISEG   (XDATA)
+                                    321 	.area HOME    (CODE)
+                                    322 	.area GSINIT0 (CODE)
+                                    323 	.area GSINIT1 (CODE)
+                                    324 	.area GSINIT2 (CODE)
+                                    325 	.area GSINIT3 (CODE)
+                                    326 	.area GSINIT4 (CODE)
+                                    327 	.area GSINIT5 (CODE)
+                                    328 	.area GSINIT  (CODE)
+                                    329 	.area GSFINAL (CODE)
+                                    330 	.area CSEG    (CODE)
+                                    331 ;--------------------------------------------------------
+                                    332 ; interrupt vector 
+                                    333 ;--------------------------------------------------------
+                                    334 	.area HOME    (CODE)
+      000000                        335 __interrupt_vect:
+      000000 02r00r00         [24]  336 	ljmp	__sdcc_gsinit_startup
+      000003 32               [24]  337 	reti
+      000004                        338 	.ds	7
+      00000B 02r00r56         [24]  339 	ljmp	_Timer0_ISR
+      00000E                        340 	.ds	5
+      000013 32               [24]  341 	reti
+      000014                        342 	.ds	7
+      00001B 02r00rD1         [24]  343 	ljmp	_Timer1
+                                    344 ;--------------------------------------------------------
+                                    345 ; global & static initialisations
+                                    346 ;--------------------------------------------------------
+                                    347 	.area HOME    (CODE)
+                                    348 	.area GSINIT  (CODE)
+                                    349 	.area GSFINAL (CODE)
+                                    350 	.area GSINIT  (CODE)
+                                    351 	.globl __sdcc_gsinit_startup
+                                    352 	.globl __sdcc_program_startup
+                                    353 	.globl __start__stack
+                                    354 	.globl __mcs51_genXINIT
+                                    355 	.globl __mcs51_genXRAMCLEAR
+                                    356 	.globl __mcs51_genRAMCLEAR
+                                    357 ;	project.c:29: unsigned char counter= 0, minute= 10, second= 0, counter_1= 0, delay=0,tone=0,play=0;
+      000000 75*00 00         [24]  358 	mov	_counter,#0x00
+                                    359 ;	project.c:29: unsigned char seg[] = {0xC0,0xF9,0xA4,0xB0,0X99,0x92,0x82,0xD8,0x80,0x98};
+      000003 75*01 0A         [24]  360 	mov	_minute,#0x0a
+                                    361 ;	project.c:29: unsigned char counter= 0, minute= 10, second= 0, counter_1= 0, delay=0,tone=0,play=0;
+      000006 75*02 00         [24]  362 	mov	_second,#0x00
+                                    363 ;	project.c:29: unsigned char seg[] = {0xC0,0xF9,0xA4,0xB0,0X99,0x92,0x82,0xD8,0x80,0x98};
+      000009 75*03 00         [24]  364 	mov	_counter_1,#0x00
+                                    365 ;	project.c:29: unsigned char counter= 0, minute= 10, second= 0, counter_1= 0, delay=0,tone=0,play=0;
+      00000C 75*04 00         [24]  366 	mov	_delay,#0x00
+                                    367 ;	project.c:29: unsigned char seg[] = {0xC0,0xF9,0xA4,0xB0,0X99,0x92,0x82,0xD8,0x80,0x98};
+      00000F 75*05 00         [24]  368 	mov	_tone,#0x00
+                                    369 ;	project.c:29: unsigned char counter= 0, minute= 10, second= 0, counter_1= 0, delay=0,tone=0,play=0;
+      000012 75*06 00         [24]  370 	mov	_play,#0x00
+                                    371 ;	project.c:30: unsigned char seg[] = {0xC0,0xF9,0xA4,0xB0,0X99,0x92,0x82,0xD8,0x80,0x98};
+      000015 75*07 C0         [24]  372 	mov	_seg,#0xc0
+      000018 75*08 F9         [24]  373 	mov	(_seg + 0x0001),#0xf9
+      00001B 75*09 A4         [24]  374 	mov	(_seg + 0x0002),#0xa4
+      00001E 75*0A B0         [24]  375 	mov	(_seg + 0x0003),#0xb0
+      000021 75*0B 99         [24]  376 	mov	(_seg + 0x0004),#0x99
+      000024 75*0C 92         [24]  377 	mov	(_seg + 0x0005),#0x92
+      000027 75*0D 82         [24]  378 	mov	(_seg + 0x0006),#0x82
+      00002A 75*0E D8         [24]  379 	mov	(_seg + 0x0007),#0xd8
+      00002D 75*0F 80         [24]  380 	mov	(_seg + 0x0008),#0x80
+      000030 75*10 98         [24]  381 	mov	(_seg + 0x0009),#0x98
+                                    382 ;	project.c:31: unsigned char digit[] = {0xC0,0xC0,0xC0,0xC0};
+      000033 75*11 C0         [24]  383 	mov	_digit,#0xc0
+      000036 75*12 C0         [24]  384 	mov	(_digit + 0x0001),#0xc0
+      000039 75*13 C0         [24]  385 	mov	(_digit + 0x0002),#0xc0
+      00003C 75*14 C0         [24]  386 	mov	(_digit + 0x0003),#0xc0
+                                    387 ;	project.c:32: unsigned char memory[] = {100,100};
+      00003F 75*15 64         [24]  388 	mov	_memory,#0x64
+      000042 75*16 64         [24]  389 	mov	(_memory + 0x0001),#0x64
+                                    390 ;	project.c:33: unsigned char clock[] = {0xA4,0xC0,0xA4,0xC0,0xC0,0x82,0xF9,0x92};
+      000045 75*17 A4         [24]  391 	mov	_clock,#0xa4
+      000048 75*18 C0         [24]  392 	mov	(_clock + 0x0001),#0xc0
+      00004B 75*19 A4         [24]  393 	mov	(_clock + 0x0002),#0xa4
+      00004E 75*1A C0         [24]  394 	mov	(_clock + 0x0003),#0xc0
+      000051 75*1B C0         [24]  395 	mov	(_clock + 0x0004),#0xc0
+      000054 75*1C 82         [24]  396 	mov	(_clock + 0x0005),#0x82
+      000057 75*1D F9         [24]  397 	mov	(_clock + 0x0006),#0xf9
+      00005A 75*1E 92         [24]  398 	mov	(_clock + 0x0007),#0x92
+                                    399 ;	project.c:40: unsigned char size = sizeof(sheet)/sizeof(sheet[0])-1;
+      00005D 75*1F 1D         [24]  400 	mov	_size,#0x1d
+                                    401 	.area GSFINAL (CODE)
+      000000 02r00r1E         [24]  402 	ljmp	__sdcc_program_startup
+                                    403 ;--------------------------------------------------------
+                                    404 ; Home
+                                    405 ;--------------------------------------------------------
+                                    406 	.area HOME    (CODE)
+                                    407 	.area HOME    (CODE)
+      00001E                        408 __sdcc_program_startup:
+      00001E 02r01rC7         [24]  409 	ljmp	_main
+                                    410 ;	return from main will return to caller
+                                    411 ;--------------------------------------------------------
+                                    412 ; code
+                                    413 ;--------------------------------------------------------
+                                    414 	.area CSEG    (CODE)
+                                    415 ;------------------------------------------------------------
+                                    416 ;Allocation info for local variables in function 'display'
+                                    417 ;------------------------------------------------------------
+                                    418 ;digit                     Allocated to registers r5 r6 r7 
+                                    419 ;i                         Allocated to registers r3 r4 
+                                    420 ;j                         Allocated to registers r1 r2 
+                                    421 ;------------------------------------------------------------
+                                    422 ;	project.c:42: void display(unsigned char *digit){
+                                    423 ;	-----------------------------------------
+                                    424 ;	 function display
+                                    425 ;	-----------------------------------------
+      000000                        426 _display:
+                           000007   427 	ar7 = 0x07
+                           000006   428 	ar6 = 0x06
+                           000005   429 	ar5 = 0x05
+                           000004   430 	ar4 = 0x04
+                           000003   431 	ar3 = 0x03
+                           000002   432 	ar2 = 0x02
+                           000001   433 	ar1 = 0x01
+                           000000   434 	ar0 = 0x00
+      000000 AD 82            [24]  435 	mov	r5,dpl
+      000002 AE 83            [24]  436 	mov	r6,dph
+      000004 AF F0            [24]  437 	mov	r7,b
+                                    438 ;	project.c:43: for(int i= 0; i< 4 ;i++){
+      000006 7B 00            [12]  439 	mov	r3,#0x00
+      000008 7C 00            [12]  440 	mov	r4,#0x00
+      00000A                        441 00107$:
+      00000A C3               [12]  442 	clr	c
+      00000B EB               [12]  443 	mov	a,r3
+      00000C 94 04            [12]  444 	subb	a,#0x04
+      00000E EC               [12]  445 	mov	a,r4
+      00000F 64 80            [12]  446 	xrl	a,#0x80
+      000011 94 80            [12]  447 	subb	a,#0x80
+      000013 50 40            [24]  448 	jnc	00109$
+                                    449 ;	project.c:44: P2 = ~(0xF1<< i);
+      000015 8B 02            [24]  450 	mov	ar2,r3
+      000017 8A F0            [24]  451 	mov	b,r2
+      000019 05 F0            [12]  452 	inc	b
+      00001B 74 F1            [12]  453 	mov	a,#0xf1
+      00001D 80 02            [24]  454 	sjmp	00132$
+      00001F                        455 00130$:
+      00001F 25 E0            [12]  456 	add	a,acc
+      000021                        457 00132$:
+      000021 D5 F0 FB         [24]  458 	djnz	b,00130$
+      000024 F4               [12]  459 	cpl	a
+      000025 F5 A0            [12]  460 	mov	_P2,a
+                                    461 ;	project.c:45: P0 = digit[i];
+      000027 EB               [12]  462 	mov	a,r3
+      000028 2D               [12]  463 	add	a,r5
+      000029 F8               [12]  464 	mov	r0,a
+      00002A EC               [12]  465 	mov	a,r4
+      00002B 3E               [12]  466 	addc	a,r6
+      00002C F9               [12]  467 	mov	r1,a
+      00002D 8F 02            [24]  468 	mov	ar2,r7
+      00002F 88 82            [24]  469 	mov	dpl,r0
+      000031 89 83            [24]  470 	mov	dph,r1
+      000033 8A F0            [24]  471 	mov	b,r2
+      000035 12r00r00         [24]  472 	lcall	__gptrget
+      000038 F5 80            [12]  473 	mov	_P0,a
+                                    474 ;	project.c:46: for(unsigned j= 0; j< 1000; j++);
+      00003A 79 00            [12]  475 	mov	r1,#0x00
+      00003C 7A 00            [12]  476 	mov	r2,#0x00
+      00003E                        477 00104$:
+      00003E C3               [12]  478 	clr	c
+      00003F E9               [12]  479 	mov	a,r1
+      000040 94 E8            [12]  480 	subb	a,#0xe8
+      000042 EA               [12]  481 	mov	a,r2
+      000043 94 03            [12]  482 	subb	a,#0x03
+      000045 50 07            [24]  483 	jnc	00108$
+      000047 09               [12]  484 	inc	r1
+      000048 B9 00 F3         [24]  485 	cjne	r1,#0x00,00104$
+      00004B 0A               [12]  486 	inc	r2
+      00004C 80 F0            [24]  487 	sjmp	00104$
+      00004E                        488 00108$:
+                                    489 ;	project.c:43: for(int i= 0; i< 4 ;i++){
+      00004E 0B               [12]  490 	inc	r3
+      00004F BB 00 B8         [24]  491 	cjne	r3,#0x00,00107$
+      000052 0C               [12]  492 	inc	r4
+      000053 80 B5            [24]  493 	sjmp	00107$
+      000055                        494 00109$:
+                                    495 ;	project.c:48: }
+      000055 22               [24]  496 	ret
+                                    497 ;------------------------------------------------------------
+                                    498 ;Allocation info for local variables in function 'Timer0_ISR'
+                                    499 ;------------------------------------------------------------
+                                    500 ;	project.c:50: void Timer0_ISR() __interrupt(1)__using(1){
+                                    501 ;	-----------------------------------------
+                                    502 ;	 function Timer0_ISR
+                                    503 ;	-----------------------------------------
+      000056                        504 _Timer0_ISR:
+                           00000F   505 	ar7 = 0x0f
+                           00000E   506 	ar6 = 0x0e
+                           00000D   507 	ar5 = 0x0d
+                           00000C   508 	ar4 = 0x0c
+                           00000B   509 	ar3 = 0x0b
+                           00000A   510 	ar2 = 0x0a
+                           000009   511 	ar1 = 0x09
+                           000008   512 	ar0 = 0x08
+      000056 C0 E0            [24]  513 	push	acc
+      000058 C0 F0            [24]  514 	push	b
+      00005A C0 82            [24]  515 	push	dpl
+      00005C C0 83            [24]  516 	push	dph
+      00005E C0 D0            [24]  517 	push	psw
+      000060 75 D0 08         [24]  518 	mov	psw,#0x08
+                                    519 ;	project.c:51: TH0 = (PERIOD>> 8);
+      000063 75 8C CF         [24]  520 	mov	_TH0,#0xcf
+                                    521 ;	project.c:52: TL0 = (PERIOD& 0xFF);
+      000066 75 8A 2C         [24]  522 	mov	_TL0,#0x2c
+                                    523 ;	project.c:53: counter++;
+      000069 05*00            [12]  524 	inc	_counter
+                                    525 ;	project.c:54: if(counter == 80){
+      00006B 74 50            [12]  526 	mov	a,#0x50
+      00006D B5*00 0F         [24]  527 	cjne	a,_counter,00104$
+                                    528 ;	project.c:55: second++;  		
+      000070 05*02            [12]  529 	inc	_second
+                                    530 ;	project.c:56: counter= 0;    		
+      000072 75*00 00         [24]  531 	mov	_counter,#0x00
+                                    532 ;	project.c:57: if(second== 60){
+      000075 74 3C            [12]  533 	mov	a,#0x3c
+      000077 B5*02 05         [24]  534 	cjne	a,_second,00104$
+                                    535 ;	project.c:58: second= 0;
+      00007A 75*02 00         [24]  536 	mov	_second,#0x00
+                                    537 ;	project.c:59: minute++;    			
+      00007D 05*01            [12]  538 	inc	_minute
+      00007F                        539 00104$:
+                                    540 ;	project.c:62: counter_1++;
+      00007F 05*03            [12]  541 	inc	_counter_1
+                                    542 ;	project.c:63: if(counter_1==45){
+      000081 74 2D            [12]  543 	mov	a,#0x2d
+      000083 B5*03 28         [24]  544 	cjne	a,_counter_1,00108$
+                                    545 ;	project.c:64: tone++;
+      000086 05*05            [12]  546 	inc	_tone
+                                    547 ;	project.c:65: TH1 = (sheet[tone] >> 8);
+      000088 E5*05            [12]  548 	mov	a,_tone
+      00008A 75 F0 02         [24]  549 	mov	b,#0x02
+      00008D A4               [48]  550 	mul	ab
+      00008E 24r00            [12]  551 	add	a,#_sheet
+      000090 F5 82            [12]  552 	mov	dpl,a
+      000092 74s00            [12]  553 	mov	a,#(_sheet >> 8)
+      000094 35 F0            [12]  554 	addc	a,b
+      000096 F5 83            [12]  555 	mov	dph,a
+      000098 E4               [12]  556 	clr	a
+      000099 93               [24]  557 	movc	a,@a+dptr
+      00009A FE               [12]  558 	mov	r6,a
+      00009B A3               [24]  559 	inc	dptr
+      00009C E4               [12]  560 	clr	a
+      00009D 93               [24]  561 	movc	a,@a+dptr
+      00009E FF               [12]  562 	mov	r7,a
+      00009F 8F 8D            [24]  563 	mov	_TH1,r7
+                                    564 ;	project.c:66: TL1 = (sheet[tone] & 0xFF);
+      0000A1 8E 8B            [24]  565 	mov	_TL1,r6
+                                    566 ;	project.c:67: counter_1= 0;
+      0000A3 75*03 00         [24]  567 	mov	_counter_1,#0x00
+                                    568 ;	project.c:68: if(tone==size)
+      0000A6 E5*1F            [12]  569 	mov	a,_size
+      0000A8 B5*05 03         [24]  570 	cjne	a,_tone,00108$
+                                    571 ;	project.c:69: tone=0;	
+      0000AB 75*05 00         [24]  572 	mov	_tone,#0x00
+      0000AE                        573 00108$:
+                                    574 ;	project.c:72: if(minute>=24)
+      0000AE 74 E8            [12]  575 	mov	a,#0x100 - 0x18
+      0000B0 25*01            [12]  576 	add	a,_minute
+      0000B2 50 03            [24]  577 	jnc	00110$
+                                    578 ;	project.c:73: minute=0;
+      0000B4 75*01 00         [24]  579 	mov	_minute,#0x00
+      0000B7                        580 00110$:
+                                    581 ;	project.c:74: if(second>=60)
+      0000B7 74 C4            [12]  582 	mov	a,#0x100 - 0x3c
+      0000B9 25*02            [12]  583 	add	a,_second
+      0000BB 50 03            [24]  584 	jnc	00112$
+                                    585 ;	project.c:75: second=0;
+      0000BD 75*02 00         [24]  586 	mov	_second,#0x00
+      0000C0                        587 00112$:
+                                    588 ;	project.c:76: if(play==0)
+      0000C0 E5*06            [12]  589 	mov	a,_play
+                                    590 ;	project.c:77: tone=0;							 	
+      0000C2 70 02            [24]  591 	jnz	00115$
+      0000C4 F5*05            [12]  592 	mov	_tone,a
+      0000C6                        593 00115$:
+                                    594 ;	project.c:78: }
+      0000C6 D0 D0            [24]  595 	pop	psw
+      0000C8 D0 83            [24]  596 	pop	dph
+      0000CA D0 82            [24]  597 	pop	dpl
+      0000CC D0 F0            [24]  598 	pop	b
+      0000CE D0 E0            [24]  599 	pop	acc
+      0000D0 32               [24]  600 	reti
+                                    601 ;------------------------------------------------------------
+                                    602 ;Allocation info for local variables in function 'Timer1'
+                                    603 ;------------------------------------------------------------
+                                    604 ;	project.c:80: void Timer1() __interrupt(3)__using(1){
+                                    605 ;	-----------------------------------------
+                                    606 ;	 function Timer1
+                                    607 ;	-----------------------------------------
+      0000D1                        608 _Timer1:
+      0000D1 C0 E0            [24]  609 	push	acc
+      0000D3 C0 F0            [24]  610 	push	b
+      0000D5 C0 82            [24]  611 	push	dpl
+      0000D7 C0 83            [24]  612 	push	dph
+      0000D9 C0 D0            [24]  613 	push	psw
+      0000DB 75 D0 08         [24]  614 	mov	psw,#0x08
+                                    615 ;	project.c:81: TH1 = (sheet[tone] >> 8);
+      0000DE E5*05            [12]  616 	mov	a,_tone
+      0000E0 75 F0 02         [24]  617 	mov	b,#0x02
+      0000E3 A4               [48]  618 	mul	ab
+      0000E4 24r00            [12]  619 	add	a,#_sheet
+      0000E6 F5 82            [12]  620 	mov	dpl,a
+      0000E8 74s00            [12]  621 	mov	a,#(_sheet >> 8)
+      0000EA 35 F0            [12]  622 	addc	a,b
+      0000EC F5 83            [12]  623 	mov	dph,a
+      0000EE E4               [12]  624 	clr	a
+      0000EF 93               [24]  625 	movc	a,@a+dptr
+      0000F0 FE               [12]  626 	mov	r6,a
+      0000F1 A3               [24]  627 	inc	dptr
+      0000F2 E4               [12]  628 	clr	a
+      0000F3 93               [24]  629 	movc	a,@a+dptr
+      0000F4 FF               [12]  630 	mov	r7,a
+      0000F5 8F 8D            [24]  631 	mov	_TH1,r7
+                                    632 ;	project.c:82: TL1 = (sheet[tone] & 0xFF);
+      0000F7 8E 8B            [24]  633 	mov	_TL1,r6
+                                    634 ;	project.c:84: if((minute==memory[0]) && (second==memory[1])){
+      0000F9 E5*15            [12]  635 	mov	a,_memory
+      0000FB B5*01 0B         [24]  636 	cjne	a,_minute,00102$
+      0000FE E5*16            [12]  637 	mov	a,(_memory + 0x0001)
+      000100 B5*02 06         [24]  638 	cjne	a,_second,00102$
+                                    639 ;	project.c:85: play=1;	
+      000103 75*06 01         [24]  640 	mov	_play,#0x01
+                                    641 ;	project.c:86: delay=0;
+      000106 75*04 00         [24]  642 	mov	_delay,#0x00
+      000109                        643 00102$:
+                                    644 ;	project.c:88: if(play==1)
+      000109 74 01            [12]  645 	mov	a,#0x01
+      00010B B5*06 05         [24]  646 	cjne	a,_play,00106$
+                                    647 ;	project.c:89: P3= ~P3;  	
+      00010E E5 B0            [12]  648 	mov	a,_P3
+      000110 F4               [12]  649 	cpl	a
+      000111 F5 B0            [12]  650 	mov	_P3,a
+      000113                        651 00106$:
+                                    652 ;	project.c:90: }
+      000113 D0 D0            [24]  653 	pop	psw
+      000115 D0 83            [24]  654 	pop	dph
+      000117 D0 82            [24]  655 	pop	dpl
+      000119 D0 F0            [24]  656 	pop	b
+      00011B D0 E0            [24]  657 	pop	acc
+      00011D 32               [24]  658 	reti
+                                    659 ;------------------------------------------------------------
+                                    660 ;Allocation info for local variables in function 'read'
+                                    661 ;------------------------------------------------------------
+                                    662 ;button                    Allocated to registers 
+                                    663 ;row                       Allocated with name '_read_row_131072_13'
+                                    664 ;k                         Allocated with name '_read_k_262144_15'
+                                    665 ;col                       Allocated to registers r0 r1 
+                                    666 ;------------------------------------------------------------
+                                    667 ;	project.c:91: unsigned char read(){
+                                    668 ;	-----------------------------------------
+                                    669 ;	 function read
+                                    670 ;	-----------------------------------------
+      00011E                        671 _read:
+                           000007   672 	ar7 = 0x07
+                           000006   673 	ar6 = 0x06
+                           000005   674 	ar5 = 0x05
+                           000004   675 	ar4 = 0x04
+                           000003   676 	ar3 = 0x03
+                           000002   677 	ar2 = 0x02
+                           000001   678 	ar1 = 0x01
+                           000000   679 	ar0 = 0x00
+                                    680 ;	project.c:93: for(int row=0; row<4; row++){
+      00011E E4               [12]  681 	clr	a
+      00011F FE               [12]  682 	mov	r6,a
+      000120 FF               [12]  683 	mov	r7,a
+      000121 F5*00            [12]  684 	mov	_read_row_131072_13,a
+      000123 F5*01            [12]  685 	mov	(_read_row_131072_13 + 1),a
+      000125                        686 00112$:
+      000125 C3               [12]  687 	clr	c
+      000126 E5*00            [12]  688 	mov	a,_read_row_131072_13
+      000128 94 04            [12]  689 	subb	a,#0x04
+      00012A E5*01            [12]  690 	mov	a,(_read_row_131072_13 + 1)
+      00012C 64 80            [12]  691 	xrl	a,#0x80
+      00012E 94 80            [12]  692 	subb	a,#0x80
+      000130 40 03            [24]  693 	jc	00141$
+      000132 02r01rC3         [24]  694 	ljmp	00107$
+      000135                        695 00141$:
+                                    696 ;	project.c:94: P1 = ~(0x01<<row);
+      000135 AB*00            [24]  697 	mov	r3,_read_row_131072_13
+      000137 8B F0            [24]  698 	mov	b,r3
+      000139 05 F0            [12]  699 	inc	b
+      00013B 74 01            [12]  700 	mov	a,#0x01
+      00013D 80 02            [24]  701 	sjmp	00144$
+      00013F                        702 00142$:
+      00013F 25 E0            [12]  703 	add	a,acc
+      000141                        704 00144$:
+      000141 D5 F0 FB         [24]  705 	djnz	b,00142$
+      000144 F4               [12]  706 	cpl	a
+      000145 F5 90            [12]  707 	mov	_P1,a
+                                    708 ;	project.c:95: if(0xF0 != (P1 & 0xF0)){
+      000147 AA 90            [24]  709 	mov	r2,_P1
+      000149 53 02 F0         [24]  710 	anl	ar2,#0xf0
+      00014C 7B 00            [12]  711 	mov	r3,#0x00
+      00014E BA F0 05         [24]  712 	cjne	r2,#0xf0,00145$
+      000151 BB 00 02         [24]  713 	cjne	r3,#0x00,00145$
+      000154 80 5E            [24]  714 	sjmp	00113$
+      000156                        715 00145$:
+                                    716 ;	project.c:96: unsigned k = P1 & 0xF0;
+      000156 AA 90            [24]  717 	mov	r2,_P1
+      000158 7B 00            [12]  718 	mov	r3,#0x00
+      00015A 74 F0            [12]  719 	mov	a,#0xf0
+      00015C 5A               [12]  720 	anl	a,r2
+      00015D F5*02            [12]  721 	mov	_read_k_262144_15,a
+                                    722 ;	1-genFromRTrack replaced	mov	(_read_k_262144_15 + 1),#0x00
+      00015F 8B*03            [24]  723 	mov	(_read_k_262144_15 + 1),r3
+                                    724 ;	project.c:97: for(int col=0; col<4; col++){
+      000161 78 00            [12]  725 	mov	r0,#0x00
+      000163 79 00            [12]  726 	mov	r1,#0x00
+      000165 7A 00            [12]  727 	mov	r2,#0x00
+      000167 7B 00            [12]  728 	mov	r3,#0x00
+      000169                        729 00109$:
+      000169 C3               [12]  730 	clr	c
+      00016A EA               [12]  731 	mov	a,r2
+      00016B 94 04            [12]  732 	subb	a,#0x04
+      00016D EB               [12]  733 	mov	a,r3
+      00016E 64 80            [12]  734 	xrl	a,#0x80
+      000170 94 80            [12]  735 	subb	a,#0x80
+      000172 50 40            [24]  736 	jnc	00113$
+                                    737 ;	project.c:98: if(!(k & (0x10<<col)) && (button==0)){
+      000174 8A F0            [24]  738 	mov	b,r2
+      000176 05 F0            [12]  739 	inc	b
+      000178 7C 10            [12]  740 	mov	r4,#0x10
+      00017A 7D 00            [12]  741 	mov	r5,#0x00
+      00017C 80 06            [24]  742 	sjmp	00148$
+      00017E                        743 00147$:
+      00017E EC               [12]  744 	mov	a,r4
+      00017F 2C               [12]  745 	add	a,r4
+      000180 FC               [12]  746 	mov	r4,a
+      000181 ED               [12]  747 	mov	a,r5
+      000182 33               [12]  748 	rlc	a
+      000183 FD               [12]  749 	mov	r5,a
+      000184                        750 00148$:
+      000184 D5 F0 F7         [24]  751 	djnz	b,00147$
+      000187 E5*02            [12]  752 	mov	a,_read_k_262144_15
+      000189 52 04            [12]  753 	anl	ar4,a
+      00018B E5*03            [12]  754 	mov	a,(_read_k_262144_15 + 1)
+      00018D 52 05            [12]  755 	anl	ar5,a
+      00018F EC               [12]  756 	mov	a,r4
+      000190 4D               [12]  757 	orl	a,r5
+      000191 70 16            [24]  758 	jnz	00110$
+                                    759 ;	project.c:100: return 4*(3-row)+3-col;                    
+      000193 8E 05            [24]  760 	mov	ar5,r6
+      000195 74 03            [12]  761 	mov	a,#0x03
+      000197 C3               [12]  762 	clr	c
+      000198 9D               [12]  763 	subb	a,r5
+      000199 25 E0            [12]  764 	add	a,acc
+      00019B 25 E0            [12]  765 	add	a,acc
+      00019D FD               [12]  766 	mov	r5,a
+      00019E 0D               [12]  767 	inc	r5
+      00019F 0D               [12]  768 	inc	r5
+      0001A0 0D               [12]  769 	inc	r5
+      0001A1 88 04            [24]  770 	mov	ar4,r0
+      0001A3 ED               [12]  771 	mov	a,r5
+      0001A4 C3               [12]  772 	clr	c
+      0001A5 9C               [12]  773 	subb	a,r4
+      0001A6 F5 82            [12]  774 	mov	dpl,a
+      0001A8 22               [24]  775 	ret
+      0001A9                        776 00110$:
+                                    777 ;	project.c:97: for(int col=0; col<4; col++){
+      0001A9 0A               [12]  778 	inc	r2
+      0001AA BA 00 01         [24]  779 	cjne	r2,#0x00,00150$
+      0001AD 0B               [12]  780 	inc	r3
+      0001AE                        781 00150$:
+      0001AE 8A 00            [24]  782 	mov	ar0,r2
+      0001B0 8B 01            [24]  783 	mov	ar1,r3
+      0001B2 80 B5            [24]  784 	sjmp	00109$
+      0001B4                        785 00113$:
+                                    786 ;	project.c:93: for(int row=0; row<4; row++){
+      0001B4 05*00            [12]  787 	inc	_read_row_131072_13
+      0001B6 E4               [12]  788 	clr	a
+      0001B7 B5*00 02         [24]  789 	cjne	a,_read_row_131072_13,00151$
+      0001BA 05*01            [12]  790 	inc	(_read_row_131072_13 + 1)
+      0001BC                        791 00151$:
+      0001BC AE*00            [24]  792 	mov	r6,_read_row_131072_13
+      0001BE AF*01            [24]  793 	mov	r7,(_read_row_131072_13 + 1)
+      0001C0 02r01r25         [24]  794 	ljmp	00112$
+      0001C3                        795 00107$:
+                                    796 ;	project.c:106: return 16;	
+      0001C3 75 82 10         [24]  797 	mov	dpl,#0x10
+                                    798 ;	project.c:107: }
+      0001C6 22               [24]  799 	ret
+                                    800 ;------------------------------------------------------------
+                                    801 ;Allocation info for local variables in function 'main'
+                                    802 ;------------------------------------------------------------
+                                    803 ;choose                    Allocated with name '_main_choose_65537_20'
+                                    804 ;n1                        Allocated with name '_main_n1_65537_20'
+                                    805 ;tmp                       Allocated to registers 
+                                    806 ;func_button               Allocated to registers r5 
+                                    807 ;flag                      Allocated with name '_main_flag_65537_20'
+                                    808 ;reset_digit               Allocated with name '_main_reset_digit_65537_20'
+                                    809 ;index                     Allocated with name '_main_index_131074_23'
+                                    810 ;z                         Allocated to registers r2 r6 
+                                    811 ;p                         Allocated to registers r6 
+                                    812 ;y                         Allocated to registers r2 r3 
+                                    813 ;y                         Allocated to registers r2 r3 
+                                    814 ;num                       Allocated to registers r7 
+                                    815 ;tt                        Allocated to registers r4 
+                                    816 ;------------------------------------------------------------
+                                    817 ;	project.c:109: void main() {
+                                    818 ;	-----------------------------------------
+                                    819 ;	 function main
+                                    820 ;	-----------------------------------------
+      0001C7                        821 _main:
+                                    822 ;	project.c:110: TH0= (PERIOD>> 8);
+      0001C7 75 8C CF         [24]  823 	mov	_TH0,#0xcf
+                                    824 ;	project.c:111: TL0= (PERIOD& 0xFF);
+      0001CA 75 8A 2C         [24]  825 	mov	_TL0,#0x2c
+                                    826 ;	project.c:112: TMOD= 0x11;
+      0001CD 75 89 11         [24]  827 	mov	_TMOD,#0x11
+                                    828 ;	project.c:113: TCON= 0x50;
+      0001D0 75 88 50         [24]  829 	mov	_TCON,#0x50
+                                    830 ;	project.c:114: IE= 0x8A; 
+      0001D3 75 A8 8A         [24]  831 	mov	_IE,#0x8a
+                                    832 ;	project.c:115: unsigned char choose= 16, n1=0,tmp=16,func_button= 0,flag=0;
+      0001D6 75*20 10         [24]  833 	mov	_main_choose_65537_20,#0x10
+      0001D9 75*21 00         [24]  834 	mov	_main_n1_65537_20,#0x00
+      0001DC 7D 00            [12]  835 	mov	r5,#0x00
+                                    836 ;	1-genFromRTrack replaced	mov	_main_flag_65537_20,#0x00
+      0001DE 8D*22            [24]  837 	mov	_main_flag_65537_20,r5
+                                    838 ;	project.c:118: while(1){
+      0001E0                        839 00152$:
+                                    840 ;	project.c:119: if(func_button==0){
+      0001E0 ED               [12]  841 	mov	a,r5
+                                    842 ;	project.c:120: digit[0]=seg[(minute/10)];
+      0001E1 70 68            [24]  843 	jnz	00102$
+      0001E3 AA*01            [24]  844 	mov	r2,_minute
+      0001E5 FB               [12]  845 	mov	r3,a
+      0001E6 75*00 0A         [24]  846 	mov	__divsint_PARM_2,#0x0a
+                                    847 ;	1-genFromRTrack replaced	mov	(__divsint_PARM_2 + 1),#0x00
+      0001E9 8B*01            [24]  848 	mov	(__divsint_PARM_2 + 1),r3
+      0001EB 8A 82            [24]  849 	mov	dpl,r2
+      0001ED 8B 83            [24]  850 	mov	dph,r3
+      0001EF C0 05            [24]  851 	push	ar5
+      0001F1 12r00r00         [24]  852 	lcall	__divsint
+      0001F4 E5 82            [12]  853 	mov	a,dpl
+      0001F6 24r07            [12]  854 	add	a,#_seg
+      0001F8 F9               [12]  855 	mov	r1,a
+      0001F9 87 03            [24]  856 	mov	ar3,@r1
+      0001FB 8B*11            [24]  857 	mov	_digit,r3
+                                    858 ;	project.c:121: digit[1]=seg[(minute%10)];
+      0001FD AA*01            [24]  859 	mov	r2,_minute
+      0001FF 7B 00            [12]  860 	mov	r3,#0x00
+      000201 75*00 0A         [24]  861 	mov	__modsint_PARM_2,#0x0a
+                                    862 ;	1-genFromRTrack replaced	mov	(__modsint_PARM_2 + 1),#0x00
+      000204 8B*01            [24]  863 	mov	(__modsint_PARM_2 + 1),r3
+      000206 8A 82            [24]  864 	mov	dpl,r2
+      000208 8B 83            [24]  865 	mov	dph,r3
+      00020A 12r00r00         [24]  866 	lcall	__modsint
+      00020D E5 82            [12]  867 	mov	a,dpl
+      00020F 24r07            [12]  868 	add	a,#_seg
+      000211 F9               [12]  869 	mov	r1,a
+      000212 87 03            [24]  870 	mov	ar3,@r1
+      000214 8B*12            [24]  871 	mov	(_digit + 0x0001),r3
+                                    872 ;	project.c:122: digit[2]=seg[(second/10)];
+      000216 AA*02            [24]  873 	mov	r2,_second
+      000218 7B 00            [12]  874 	mov	r3,#0x00
+      00021A 75*00 0A         [24]  875 	mov	__divsint_PARM_2,#0x0a
+                                    876 ;	1-genFromRTrack replaced	mov	(__divsint_PARM_2 + 1),#0x00
+      00021D 8B*01            [24]  877 	mov	(__divsint_PARM_2 + 1),r3
+      00021F 8A 82            [24]  878 	mov	dpl,r2
+      000221 8B 83            [24]  879 	mov	dph,r3
+      000223 12r00r00         [24]  880 	lcall	__divsint
+      000226 E5 82            [12]  881 	mov	a,dpl
+      000228 24r07            [12]  882 	add	a,#_seg
+      00022A F9               [12]  883 	mov	r1,a
+      00022B 87 03            [24]  884 	mov	ar3,@r1
+      00022D 8B*13            [24]  885 	mov	(_digit + 0x0002),r3
+                                    886 ;	project.c:123: digit[3]=seg[(second%10)];					
+      00022F AA*02            [24]  887 	mov	r2,_second
+      000231 7B 00            [12]  888 	mov	r3,#0x00
+      000233 75*00 0A         [24]  889 	mov	__modsint_PARM_2,#0x0a
+                                    890 ;	1-genFromRTrack replaced	mov	(__modsint_PARM_2 + 1),#0x00
+      000236 8B*01            [24]  891 	mov	(__modsint_PARM_2 + 1),r3
+      000238 8A 82            [24]  892 	mov	dpl,r2
+      00023A 8B 83            [24]  893 	mov	dph,r3
+      00023C 12r00r00         [24]  894 	lcall	__modsint
+      00023F AA 82            [24]  895 	mov	r2,dpl
+      000241 D0 05            [24]  896 	pop	ar5
+      000243 EA               [12]  897 	mov	a,r2
+      000244 24r07            [12]  898 	add	a,#_seg
+      000246 F9               [12]  899 	mov	r1,a
+      000247 87 03            [24]  900 	mov	ar3,@r1
+      000249 8B*14            [24]  901 	mov	(_digit + 0x0003),r3
+      00024B                        902 00102$:
+                                    903 ;	project.c:125: display(digit);	
+      00024B 90r00r11         [24]  904 	mov	dptr,#_digit
+      00024E 75 F0 40         [24]  905 	mov	b,#0x40
+      000251 C0 05            [24]  906 	push	ar5
+      000253 12r00r00         [24]  907 	lcall	_display
+                                    908 ;	project.c:127: unsigned char index=read();
+      000256 12r01r1E         [24]  909 	lcall	_read
+      000259 85 82*27         [24]  910 	mov	_main_index_131074_23,dpl
+      00025C D0 05            [24]  911 	pop	ar5
+                                    912 ;	project.c:129: if(func_button== 0)
+      00025E ED               [12]  913 	mov	a,r5
+      00025F 70 03            [24]  914 	jnz	00104$
+                                    915 ;	project.c:130: choose=index;	                 
+      000261 85*27*20         [24]  916 	mov	_main_choose_65537_20,_main_index_131074_23
+      000264                        917 00104$:
+                                    918 ;	project.c:131: if(func_button== 0 && choose> 9 && choose< 16){ 
+      000264 ED               [12]  919 	mov	a,r5
+      000265 60 03            [24]  920 	jz	00302$
+      000267 02r03r72         [24]  921 	ljmp	00130$
+      00026A                        922 00302$:
+      00026A E5*20            [12]  923 	mov	a,_main_choose_65537_20
+      00026C 24 F6            [12]  924 	add	a,#0xff - 0x09
+      00026E 40 03            [24]  925 	jc	00303$
+      000270 02r03r72         [24]  926 	ljmp	00130$
+      000273                        927 00303$:
+      000273 74 F0            [12]  928 	mov	a,#0x100 - 0x10
+      000275 25*20            [12]  929 	add	a,_main_choose_65537_20
+      000277 50 03            [24]  930 	jnc	00304$
+      000279 02r03r72         [24]  931 	ljmp	00130$
+      00027C                        932 00304$:
+                                    933 ;	project.c:132: choose=index;               		
+      00027C 85*27*20         [24]  934 	mov	_main_choose_65537_20,_main_index_131074_23
+                                    935 ;	project.c:133: func_button=1;
+      00027F 7D 01            [12]  936 	mov	r5,#0x01
+                                    937 ;	project.c:134: if(choose== 10 || choose== 11){
+      000281 74 0A            [12]  938 	mov	a,#0x0a
+      000283 B5*27 02         [24]  939 	cjne	a,_main_index_131074_23,00305$
+      000286 80 05            [24]  940 	sjmp	00106$
+      000288                        941 00305$:
+      000288 74 0B            [12]  942 	mov	a,#0x0b
+      00028A B5*27 1D         [24]  943 	cjne	a,_main_index_131074_23,00107$
+      00028D                        944 00106$:
+                                    945 ;	project.c:135: n1=0;
+      00028D 75*21 00         [24]  946 	mov	_main_n1_65537_20,#0x00
+                                    947 ;	project.c:136: for(unsigned z=0;z<4;z++)
+      000290 7A 00            [12]  948 	mov	r2,#0x00
+      000292 7E 00            [12]  949 	mov	r6,#0x00
+      000294                        950 00155$:
+      000294 C3               [12]  951 	clr	c
+      000295 EA               [12]  952 	mov	a,r2
+      000296 94 04            [12]  953 	subb	a,#0x04
+      000298 EE               [12]  954 	mov	a,r6
+      000299 94 00            [12]  955 	subb	a,#0x00
+      00029B 50 0D            [24]  956 	jnc	00107$
+                                    957 ;	project.c:137: digit[z]=0xBF;
+      00029D EA               [12]  958 	mov	a,r2
+      00029E 24r11            [12]  959 	add	a,#_digit
+      0002A0 F8               [12]  960 	mov	r0,a
+      0002A1 76 BF            [12]  961 	mov	@r0,#0xbf
+                                    962 ;	project.c:136: for(unsigned z=0;z<4;z++)
+      0002A3 0A               [12]  963 	inc	r2
+      0002A4 BA 00 ED         [24]  964 	cjne	r2,#0x00,00155$
+      0002A7 0E               [12]  965 	inc	r6
+      0002A8 80 EA            [24]  966 	sjmp	00155$
+      0002AA                        967 00107$:
+                                    968 ;	project.c:139: if(choose==12){
+      0002AA 74 0C            [12]  969 	mov	a,#0x0c
+      0002AC B5*20 0E         [24]  970 	cjne	a,_main_choose_65537_20,00110$
+                                    971 ;	project.c:140: play=0;
+      0002AF 75*06 00         [24]  972 	mov	_play,#0x00
+                                    973 ;	project.c:141: delay=0;
+      0002B2 75*04 00         [24]  974 	mov	_delay,#0x00
+                                    975 ;	project.c:142: func_button=0;
+      0002B5 7D 00            [12]  976 	mov	r5,#0x00
+                                    977 ;	project.c:143: memory[0]= 100;
+      0002B7 75*15 64         [24]  978 	mov	_memory,#0x64
+                                    979 ;	project.c:144: memory[1]= 100;	
+      0002BA 75*16 64         [24]  980 	mov	(_memory + 0x0001),#0x64
+      0002BD                        981 00110$:
+                                    982 ;	project.c:146: if(choose== 13){
+      0002BD 74 0D            [12]  983 	mov	a,#0x0d
+      0002BF B5*20 24         [24]  984 	cjne	a,_main_choose_65537_20,00116$
+                                    985 ;	project.c:147: play= 0;
+                                    986 ;	project.c:148: func_button= 0;
+                                    987 ;	project.c:149: if(delay== 0){
+      0002C2 E4               [12]  988 	clr	a
+      0002C3 F5*06            [12]  989 	mov	_play,a
+      0002C5 FD               [12]  990 	mov	r5,a
+      0002C6 E5*04            [12]  991 	mov	a,_delay
+      0002C8 70 1C            [24]  992 	jnz	00116$
+                                    993 ;	project.c:150: memory[1]=second+10;
+      0002CA AE*02            [24]  994 	mov	r6,_second
+      0002CC 74 0A            [12]  995 	mov	a,#0x0a
+      0002CE 2E               [12]  996 	add	a,r6
+      0002CF F5*16            [12]  997 	mov	(_memory + 0x0001),a
+                                    998 ;	project.c:151: if(memory[1]>=60){
+      0002D1 AE*16            [24]  999 	mov	r6,(_memory + 0x0001)
+      0002D3 BE 3C 00         [24] 1000 	cjne	r6,#0x3c,00315$
+      0002D6                       1001 00315$:
+      0002D6 40 0B            [24] 1002 	jc	00112$
+                                   1003 ;	project.c:152: memory[1]-=60;
+      0002D8 EE               [12] 1004 	mov	a,r6
+      0002D9 24 C4            [12] 1005 	add	a,#0xc4
+      0002DB F5*16            [12] 1006 	mov	(_memory + 0x0001),a
+                                   1007 ;	project.c:153: memory[0]+=1;
+      0002DD E5*15            [12] 1008 	mov	a,_memory
+      0002DF FE               [12] 1009 	mov	r6,a
+      0002E0 04               [12] 1010 	inc	a
+      0002E1 F5*15            [12] 1011 	mov	_memory,a
+      0002E3                       1012 00112$:
+                                   1013 ;	project.c:155: delay=1;									
+      0002E3 75*04 01         [24] 1014 	mov	_delay,#0x01
+      0002E6                       1015 00116$:
+                                   1016 ;	project.c:158: if(choose==15){
+      0002E6 74 0F            [12] 1017 	mov	a,#0x0f
+      0002E8 B5*20 02         [24] 1018 	cjne	a,_main_choose_65537_20,00317$
+      0002EB 80 03            [24] 1019 	sjmp	00318$
+      0002ED                       1020 00317$:
+      0002ED 02r03r72         [24] 1021 	ljmp	00130$
+      0002F0                       1022 00318$:
+                                   1023 ;	project.c:159: unsigned char p=0;
+      0002F0 7E 00            [12] 1024 	mov	r6,#0x00
+                                   1025 ;	project.c:160: while(read()!=16){
+      0002F2                       1026 00124$:
+      0002F2 C0 06            [24] 1027 	push	ar6
+      0002F4 12r01r1E         [24] 1028 	lcall	_read
+      0002F7 AA 82            [24] 1029 	mov	r2,dpl
+      0002F9 D0 06            [24] 1030 	pop	ar6
+      0002FB BA 10 02         [24] 1031 	cjne	r2,#0x10,00319$
+      0002FE 80 70            [24] 1032 	sjmp	00126$
+      000300                       1033 00319$:
+                                   1034 ;	project.c:161: for(unsigned y=0;y<4;y++)
+      000300 7A 00            [12] 1035 	mov	r2,#0x00
+      000302 7B 00            [12] 1036 	mov	r3,#0x00
+      000304                       1037 00158$:
+      000304 C3               [12] 1038 	clr	c
+      000305 EA               [12] 1039 	mov	a,r2
+      000306 94 04            [12] 1040 	subb	a,#0x04
+      000308 EB               [12] 1041 	mov	a,r3
+      000309 94 00            [12] 1042 	subb	a,#0x00
+      00030B 50 13            [24] 1043 	jnc	00117$
+                                   1044 ;	project.c:162: digit[y]=clock[y];
+      00030D EA               [12] 1045 	mov	a,r2
+      00030E 24r11            [12] 1046 	add	a,#_digit
+      000310 F9               [12] 1047 	mov	r1,a
+      000311 EA               [12] 1048 	mov	a,r2
+      000312 24r17            [12] 1049 	add	a,#_clock
+      000314 F8               [12] 1050 	mov	r0,a
+      000315 86 07            [24] 1051 	mov	ar7,@r0
+      000317 A7 07            [24] 1052 	mov	@r1,ar7
+                                   1053 ;	project.c:161: for(unsigned y=0;y<4;y++)
+      000319 0A               [12] 1054 	inc	r2
+      00031A BA 00 E7         [24] 1055 	cjne	r2,#0x00,00158$
+      00031D 0B               [12] 1056 	inc	r3
+      00031E 80 E4            [24] 1057 	sjmp	00158$
+      000320                       1058 00117$:
+                                   1059 ;	project.c:163: display(digit);
+      000320 90r00r11         [24] 1060 	mov	dptr,#_digit
+      000323 75 F0 40         [24] 1061 	mov	b,#0x40
+      000326 C0 06            [24] 1062 	push	ar6
+      000328 12r00r00         [24] 1063 	lcall	_display
+      00032B D0 06            [24] 1064 	pop	ar6
+                                   1065 ;	project.c:164: p++;
+      00032D 0E               [12] 1066 	inc	r6
+                                   1067 ;	project.c:165: if(p==120){
+      00032E BE 78 C1         [24] 1068 	cjne	r6,#0x78,00124$
+                                   1069 ;	project.c:166: while(p<=240){
+      000331 8E 07            [24] 1070 	mov	ar7,r6
+      000333                       1071 00119$:
+      000333 EF               [12] 1072 	mov	a,r7
+      000334 24 0F            [12] 1073 	add	a,#0xff - 0xf0
+      000336 40 34            [24] 1074 	jc	00121$
+                                   1075 ;	project.c:167: for(unsigned y=0;y<4;y++)
+      000338 7A 00            [12] 1076 	mov	r2,#0x00
+      00033A 7B 00            [12] 1077 	mov	r3,#0x00
+      00033C                       1078 00161$:
+      00033C C3               [12] 1079 	clr	c
+      00033D EA               [12] 1080 	mov	a,r2
+      00033E 94 04            [12] 1081 	subb	a,#0x04
+      000340 EB               [12] 1082 	mov	a,r3
+      000341 94 00            [12] 1083 	subb	a,#0x00
+      000343 50 17            [24] 1084 	jnc	00118$
+                                   1085 ;	project.c:168: digit[y]=clock[y+4];
+      000345 EA               [12] 1086 	mov	a,r2
+      000346 24r11            [12] 1087 	add	a,#_digit
+      000348 F9               [12] 1088 	mov	r1,a
+      000349 8A 04            [24] 1089 	mov	ar4,r2
+      00034B 74 04            [12] 1090 	mov	a,#0x04
+      00034D 2C               [12] 1091 	add	a,r4
+      00034E 24r17            [12] 1092 	add	a,#_clock
+      000350 F8               [12] 1093 	mov	r0,a
+      000351 86 04            [24] 1094 	mov	ar4,@r0
+      000353 A7 04            [24] 1095 	mov	@r1,ar4
+                                   1096 ;	project.c:167: for(unsigned y=0;y<4;y++)
+      000355 0A               [12] 1097 	inc	r2
+      000356 BA 00 E3         [24] 1098 	cjne	r2,#0x00,00161$
+      000359 0B               [12] 1099 	inc	r3
+      00035A 80 E0            [24] 1100 	sjmp	00161$
+      00035C                       1101 00118$:
+                                   1102 ;	project.c:169: display(digit);
+      00035C 90r00r11         [24] 1103 	mov	dptr,#_digit
+      00035F 75 F0 40         [24] 1104 	mov	b,#0x40
+      000362 C0 07            [24] 1105 	push	ar7
+      000364 12r00r00         [24] 1106 	lcall	_display
+      000367 D0 07            [24] 1107 	pop	ar7
+                                   1108 ;	project.c:170: p++;							
+      000369 0F               [12] 1109 	inc	r7
+      00036A 80 C7            [24] 1110 	sjmp	00119$
+      00036C                       1111 00121$:
+                                   1112 ;	project.c:172: p=0;
+      00036C 7E 00            [12] 1113 	mov	r6,#0x00
+      00036E 80 82            [24] 1114 	sjmp	00124$
+      000370                       1115 00126$:
+                                   1116 ;	project.c:175: func_button=0;
+      000370 7D 00            [12] 1117 	mov	r5,#0x00
+      000372                       1118 00130$:
+                                   1119 ;	project.c:179: unsigned char num=index;
+      000372 AF*27            [24] 1120 	mov	r7,_main_index_131074_23
+                                   1121 ;	project.c:180: if(func_button==1 && (choose==10 || choose==11) && num>=0 && num<10){
+      000374 BD 01 02         [24] 1122 	cjne	r5,#0x01,00327$
+      000377 80 03            [24] 1123 	sjmp	00328$
+      000379                       1124 00327$:
+      000379 02r01rE0         [24] 1125 	ljmp	00152$
+      00037C                       1126 00328$:
+      00037C 74 0A            [12] 1127 	mov	a,#0x0a
+      00037E B5*20 04         [24] 1128 	cjne	a,_main_choose_65537_20,00329$
+      000381 74 01            [12] 1129 	mov	a,#0x01
+      000383 80 01            [24] 1130 	sjmp	00330$
+      000385                       1131 00329$:
+      000385 E4               [12] 1132 	clr	a
+      000386                       1133 00330$:
+      000386 FE               [12] 1134 	mov	r6,a
+      000387 70 0A            [24] 1135 	jnz	00150$
+      000389 74 0B            [12] 1136 	mov	a,#0x0b
+      00038B B5*20 02         [24] 1137 	cjne	a,_main_choose_65537_20,00332$
+      00038E 80 03            [24] 1138 	sjmp	00333$
+      000390                       1139 00332$:
+      000390 02r01rE0         [24] 1140 	ljmp	00152$
+      000393                       1141 00333$:
+      000393                       1142 00150$:
+      000393 BF 0A 00         [24] 1143 	cjne	r7,#0x0a,00334$
+      000396                       1144 00334$:
+      000396 40 03            [24] 1145 	jc	00335$
+      000398 02r01rE0         [24] 1146 	ljmp	00152$
+      00039B                       1147 00335$:
+                                   1148 ;	project.c:181: while(n1!=4){
+      00039B AF*21            [24] 1149 	mov	r7,_main_n1_65537_20
+      00039D                       1150 00138$:
+      00039D BF 04 02         [24] 1151 	cjne	r7,#0x04,00336$
+      0003A0 80 45            [24] 1152 	sjmp	00199$
+      0003A2                       1153 00336$:
+                                   1154 ;	project.c:182: unsigned char tt=read();
+      0003A2 C0 07            [24] 1155 	push	ar7
+      0003A4 C0 06            [24] 1156 	push	ar6
+      0003A6 12r01r1E         [24] 1157 	lcall	_read
+      0003A9 AC 82            [24] 1158 	mov	r4,dpl
+      0003AB D0 06            [24] 1159 	pop	ar6
+      0003AD D0 07            [24] 1160 	pop	ar7
+                                   1161 ;	project.c:183: if(tt!=16 && flag==0){
+      0003AF BC 10 02         [24] 1162 	cjne	r4,#0x10,00337$
+      0003B2 80 1A            [24] 1163 	sjmp	00134$
+      0003B4                       1164 00337$:
+      0003B4 E5*22            [12] 1165 	mov	a,_main_flag_65537_20
+      0003B6 70 16            [24] 1166 	jnz	00134$
+                                   1167 ;	project.c:184: digit[n1]=seg[tt];
+      0003B8 EF               [12] 1168 	mov	a,r7
+      0003B9 24r11            [12] 1169 	add	a,#_digit
+      0003BB F9               [12] 1170 	mov	r1,a
+      0003BC EC               [12] 1171 	mov	a,r4
+      0003BD 24r07            [12] 1172 	add	a,#_seg
+      0003BF F8               [12] 1173 	mov	r0,a
+      0003C0 86 03            [24] 1174 	mov	ar3,@r0
+      0003C2 A7 03            [24] 1175 	mov	@r1,ar3
+                                   1176 ;	project.c:185: reset_digit[n1]=tt;
+      0003C4 EF               [12] 1177 	mov	a,r7
+      0003C5 24r23            [12] 1178 	add	a,#_main_reset_digit_65537_20
+      0003C7 F8               [12] 1179 	mov	r0,a
+      0003C8 A6 04            [24] 1180 	mov	@r0,ar4
+                                   1181 ;	project.c:186: n1++;
+      0003CA 0F               [12] 1182 	inc	r7
+                                   1183 ;	project.c:187: flag=1;
+      0003CB 75*22 01         [24] 1184 	mov	_main_flag_65537_20,#0x01
+      0003CE                       1185 00134$:
+                                   1186 ;	project.c:189: if(tt==16)
+      0003CE BC 10 03         [24] 1187 	cjne	r4,#0x10,00137$
+                                   1188 ;	project.c:190: flag=0;
+      0003D1 75*22 00         [24] 1189 	mov	_main_flag_65537_20,#0x00
+      0003D4                       1190 00137$:
+                                   1191 ;	project.c:191: display(digit);	
+      0003D4 90r00r11         [24] 1192 	mov	dptr,#_digit
+      0003D7 75 F0 40         [24] 1193 	mov	b,#0x40
+      0003DA C0 07            [24] 1194 	push	ar7
+      0003DC C0 06            [24] 1195 	push	ar6
+      0003DE 12r00r00         [24] 1196 	lcall	_display
+      0003E1 D0 06            [24] 1197 	pop	ar6
+      0003E3 D0 07            [24] 1198 	pop	ar7
+      0003E5 80 B6            [24] 1199 	sjmp	00138$
+      0003E7                       1200 00199$:
+      0003E7 8F*21            [24] 1201 	mov	_main_n1_65537_20,r7
+                                   1202 ;	project.c:194: if(choose==10){
+      0003E9 EE               [12] 1203 	mov	a,r6
+      0003EA 60 2E            [24] 1204 	jz	00142$
+                                   1205 ;	project.c:195: minute=reset_digit[0]*10+reset_digit[1];									
+      0003EC E5*23            [12] 1206 	mov	a,_main_reset_digit_65537_20
+      0003EE 75 F0 0A         [24] 1207 	mov	b,#0x0a
+      0003F1 A4               [48] 1208 	mul	ab
+      0003F2 25*24            [12] 1209 	add	a,(_main_reset_digit_65537_20 + 0x0001)
+      0003F4 F5*01            [12] 1210 	mov	_minute,a
+                                   1211 ;	project.c:196: second=reset_digit[2]*10+reset_digit[3];
+      0003F6 E5*25            [12] 1212 	mov	a,(_main_reset_digit_65537_20 + 0x0002)
+      0003F8 75 F0 0A         [24] 1213 	mov	b,#0x0a
+      0003FB A4               [48] 1214 	mul	ab
+      0003FC 25*26            [12] 1215 	add	a,(_main_reset_digit_65537_20 + 0x0003)
+      0003FE F5*02            [12] 1216 	mov	_second,a
+                                   1217 ;	project.c:197: digit[3]=seg[(second%10)];									
+      000400 AE*02            [24] 1218 	mov	r6,_second
+      000402 7F 00            [12] 1219 	mov	r7,#0x00
+      000404 75*00 0A         [24] 1220 	mov	__modsint_PARM_2,#0x0a
+                                   1221 ;	1-genFromRTrack replaced	mov	(__modsint_PARM_2 + 1),#0x00
+      000407 8F*01            [24] 1222 	mov	(__modsint_PARM_2 + 1),r7
+      000409 8E 82            [24] 1223 	mov	dpl,r6
+      00040B 8F 83            [24] 1224 	mov	dph,r7
+      00040D 12r00r00         [24] 1225 	lcall	__modsint
+      000410 E5 82            [12] 1226 	mov	a,dpl
+      000412 FE               [12] 1227 	mov	r6,a
+      000413 24r07            [12] 1228 	add	a,#_seg
+      000415 F9               [12] 1229 	mov	r1,a
+      000416 87 07            [24] 1230 	mov	ar7,@r1
+      000418 8F*14            [24] 1231 	mov	(_digit + 0x0003),r7
+      00041A                       1232 00142$:
+                                   1233 ;	project.c:199: if(choose==11){
+      00041A 74 0B            [12] 1234 	mov	a,#0x0b
+      00041C B5*20 17         [24] 1235 	cjne	a,_main_choose_65537_20,00144$
+                                   1236 ;	project.c:200: memory[0]=reset_digit[0]*10+reset_digit[1];
+      00041F E5*23            [12] 1237 	mov	a,_main_reset_digit_65537_20
+      000421 75 F0 0A         [24] 1238 	mov	b,#0x0a
+      000424 A4               [48] 1239 	mul	ab
+      000425 25*24            [12] 1240 	add	a,(_main_reset_digit_65537_20 + 0x0001)
+      000427 F5*15            [12] 1241 	mov	_memory,a
+                                   1242 ;	project.c:201: memory[1]=reset_digit[2]*10+reset_digit[3];
+      000429 E5*25            [12] 1243 	mov	a,(_main_reset_digit_65537_20 + 0x0002)
+      00042B 75 F0 0A         [24] 1244 	mov	b,#0x0a
+      00042E A4               [48] 1245 	mul	ab
+      00042F FF               [12] 1246 	mov	r7,a
+      000430 E5*26            [12] 1247 	mov	a,(_main_reset_digit_65537_20 + 0x0003)
+      000432 FE               [12] 1248 	mov	r6,a
+      000433 2F               [12] 1249 	add	a,r7
+      000434 F5*16            [12] 1250 	mov	(_memory + 0x0001),a
+      000436                       1251 00144$:
+                                   1252 ;	project.c:203: func_button=0;												
+      000436 7D 00            [12] 1253 	mov	r5,#0x00
+                                   1254 ;	project.c:206: }
+      000438 02r01rE0         [24] 1255 	ljmp	00152$
+                                   1256 	.area CSEG    (CODE)
+                                   1257 	.area CONST   (CODE)
+      000000                       1258 _sheet:
+      000000 05 FB                 1259 	.byte #0x05, #0xfb	; 64261
+      000002 8C F8                 1260 	.byte #0x8c, #0xf8	; 63628
+      000004 5C F9                 1261 	.byte #0x5c, #0xf9	; 63836
+      000006 15 FA                 1262 	.byte #0x15, #0xfa	; 64021
+      000008 68 FA                 1263 	.byte #0x68, #0xfa	; 64104
+      00000A 05 FB                 1264 	.byte #0x05, #0xfb	; 64261
+      00000C 8C F8                 1265 	.byte #0x8c, #0xf8	; 63628
+      00000E 8C F8                 1266 	.byte #0x8c, #0xf8	; 63628
+      000010 90 FB                 1267 	.byte #0x90, #0xfb	; 64400
+      000012 68 FA                 1268 	.byte #0x68, #0xfa	; 64104
+      000014 05 FB                 1269 	.byte #0x05, #0xfb	; 64261
+      000016 90 FB                 1270 	.byte #0x90, #0xfb	; 64400
+      000018 0C FC                 1271 	.byte #0x0c, #0xfc	; 64524
+      00001A 46 FC                 1272 	.byte #0x46, #0xfc	; 64582
+      00001C 8C F8                 1273 	.byte #0x8c, #0xf8	; 63628
+      00001E 8C F8                 1274 	.byte #0x8c, #0xf8	; 63628
+      000020 68 FA                 1275 	.byte #0x68, #0xfa	; 64104
+      000022 05 FB                 1276 	.byte #0x05, #0xfb	; 64261
+      000024 68 FA                 1277 	.byte #0x68, #0xfa	; 64104
+      000026 15 FA                 1278 	.byte #0x15, #0xfa	; 64021
+      000028 5C F9                 1279 	.byte #0x5c, #0xf9	; 63836
+      00002A 15 FA                 1280 	.byte #0x15, #0xfa	; 64021
+      00002C 68 FA                 1281 	.byte #0x68, #0xfa	; 64104
+      00002E 15 FA                 1282 	.byte #0x15, #0xfa	; 64021
+      000030 5C F9                 1283 	.byte #0x5c, #0xf9	; 63836
+      000032 8C F8                 1284 	.byte #0x8c, #0xf8	; 63628
+      000034 5C F9                 1285 	.byte #0x5c, #0xf9	; 63836
+      000036 15 FA                 1286 	.byte #0x15, #0xfa	; 64021
+      000038 8C F8                 1287 	.byte #0x8c, #0xf8	; 63628
+      00003A 5C F9                 1288 	.byte #0x5c, #0xf9	; 63836
+                                   1289 	.area XINIT   (CODE)
+                                   1290 	.area CABS    (ABS,CODE)
